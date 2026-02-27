@@ -1,0 +1,217 @@
+{
+  "info": {
+    "_postman_id": "aa6ee0c7-a433-49db-96ae-9a8a00c1df99",
+    "name": "sarahaApp",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49715513",
+    "_collection_link": "https://go.postman.co/collection/49715513-aa6ee0c7-a433-49db-96ae-9a8a00c1df99?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Sign Up",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "userName",
+              "value": "Diaa Eldeen",
+              "type": "text",
+              "uuid": "f1593e74-59dc-47d8-b510-096bf384a27d"
+            },
+            {
+              "key": "email",
+              "value": "diaa22di@gmail.com",
+              "type": "text",
+              "uuid": "514ad5fe-ca62-4329-9f01-a19f2c939d5a"
+            },
+            {
+              "key": "password",
+              "value": "DiaaDiaa",
+              "type": "text",
+              "uuid": "50bd939e-c06c-4e96-a54b-19bd847d7cb2"
+            },
+            {
+              "key": "rePassword",
+              "value": "DiaaDiaa",
+              "type": "text",
+              "uuid": "e1bfbf12-6eb7-4582-8de7-35efc905bf91"
+            },
+            {
+              "key": "phone",
+              "value": "01278396490",
+              "type": "text",
+              "uuid": "3bf0994c-fc8b-41d0-bfe0-7dd8630af548"
+            },
+            {
+              "key": "age",
+              "value": "23",
+              "type": "text",
+              "uuid": "4949ceab-12f5-4c97-9766-5939026c2476"
+            },
+            {
+              "key": "gender",
+              "value": "male",
+              "type": "text",
+              "uuid": "35d6ee43-927c-47d9-b03f-956f2d5742e5"
+            },
+            {
+              "key": "image",
+              "type": "file",
+              "uuid": "753b96a2-774f-4433-9764-89868d209841",
+              "src": "/F:/Eng Diaa Eldeen/Code And Career/Shortcuts.txt"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/users/signup",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "users",
+            "signup"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sign In",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"diaa@gmail.com\",\n  \"password\": \"DiaaDiaa\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/users/signin",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "users",
+            "signin"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTk4ZjU5MjkyZGVmYTdmODJkYTVlNWQiLCJpYXQiOjE3NzE2MzIxNzEsImV4cCI6MTc3MTYzNTc3MX0.vQNBgMKiLTayxshR_3PsudyZMC94qAPhbWl61GH3yNc"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/users/profile",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "users",
+            "profile"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Profile ById",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWEyMDhlY2ZlMmRlNTRjZjI1OGE4YzciLCJpYXQiOjE3NzIyMjY5MDMsImV4cCI6MTc3MjIzMDUwM30.C-y_tP4Tkapor9lS3iWH6DjY3TFusPnjbbk2regatmw",
+            "disabled": true
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/users/69a208ecfe2de54cf258a8c7",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "users",
+            "69a208ecfe2de54cf258a8c7"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
