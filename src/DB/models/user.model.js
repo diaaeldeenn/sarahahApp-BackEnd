@@ -53,7 +53,12 @@ const userSchema = new mongoose.Schema(
       default: ProviderEnum.system,
     },
     phone: String,
-    profilePicture: String,
+    profilePicture: {
+      type: {
+        secure_url: { type: String, required: true },
+        public_id: { type: String, required: true },
+      },
+    },
     confirmed: Boolean,
     totalViews: {
       type: Number,

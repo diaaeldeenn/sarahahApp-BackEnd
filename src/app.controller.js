@@ -7,6 +7,7 @@ const port = 3000;
 
 const bootstrap = () => {
   app.use(cors(), express.json());
+  app.use("/src/DB/uploads",express.static("src/DB/uploads"));
   app.get("/", (req, res) => {
     res.status(200).json({ message: "Welcome In My Api" });
   });

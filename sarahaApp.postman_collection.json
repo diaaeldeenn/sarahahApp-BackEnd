@@ -8,186 +8,329 @@
   },
   "item": [
     {
-      "name": "Sign Up",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "formdata",
-          "formdata": [
-            {
-              "key": "userName",
-              "value": "Diaa Eldeen",
-              "type": "text",
-              "uuid": "f1593e74-59dc-47d8-b510-096bf384a27d"
+      "name": "auth",
+      "item": [
+        {
+          "name": "Sign Up",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "userName",
+                  "value": "Diaa Eldeen",
+                  "type": "text",
+                  "uuid": "179339eb-fa7b-4c5d-b02a-3e8687f6cace"
+                },
+                {
+                  "key": "email",
+                  "value": "diaa2002@gmail.com",
+                  "type": "text",
+                  "uuid": "a569f4a0-c66f-4bc6-b7dc-e4cbf2474cf4"
+                },
+                {
+                  "key": "age",
+                  "value": "23",
+                  "type": "text",
+                  "uuid": "a11dccad-5e57-4cbb-909d-69894d46b852"
+                },
+                {
+                  "key": "gender",
+                  "value": "male",
+                  "type": "text",
+                  "uuid": "9be659bc-ba9f-4d43-9ed0-966ca4d8769f"
+                },
+                {
+                  "key": "password",
+                  "value": "DiaaDiaa",
+                  "type": "text",
+                  "uuid": "4897390d-b73e-426a-9ac4-06761a48ef0c"
+                },
+                {
+                  "key": "rePassword",
+                  "value": "DiaaDiaa",
+                  "type": "text",
+                  "uuid": "3350e019-6f48-4efc-a450-7afe73c7260e"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "d80d8a99-2c5b-42b9-ade9-a1eb9b6e126c",
+                  "src": "/F:/Eng Diaa Eldeen/Code And Career/My Ai.png"
+                },
+                {
+                  "key": "phone",
+                  "value": "01278396490",
+                  "type": "text",
+                  "uuid": "eb1aa0e2-d50d-456e-8f9b-619847f4f54c"
+                }
+              ]
             },
-            {
-              "key": "email",
-              "value": "diaa22di@gmail.com",
-              "type": "text",
-              "uuid": "514ad5fe-ca62-4329-9f01-a19f2c939d5a"
-            },
-            {
-              "key": "password",
-              "value": "DiaaDiaa",
-              "type": "text",
-              "uuid": "50bd939e-c06c-4e96-a54b-19bd847d7cb2"
-            },
-            {
-              "key": "rePassword",
-              "value": "DiaaDiaa",
-              "type": "text",
-              "uuid": "e1bfbf12-6eb7-4582-8de7-35efc905bf91"
-            },
-            {
-              "key": "phone",
-              "value": "01278396490",
-              "type": "text",
-              "uuid": "3bf0994c-fc8b-41d0-bfe0-7dd8630af548"
-            },
-            {
-              "key": "age",
-              "value": "23",
-              "type": "text",
-              "uuid": "4949ceab-12f5-4c97-9766-5939026c2476"
-            },
-            {
-              "key": "gender",
-              "value": "male",
-              "type": "text",
-              "uuid": "35d6ee43-927c-47d9-b03f-956f2d5742e5"
-            },
-            {
-              "key": "image",
-              "type": "file",
-              "uuid": "753b96a2-774f-4433-9764-89868d209841",
-              "src": "/F:/Eng Diaa Eldeen/Code And Career/Shortcuts.txt"
+            "url": {
+              "raw": "http://localhost:3000/users/signup",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "users",
+                "signup"
+              ]
             }
-          ]
-        },
-        "url": {
-          "raw": "http://localhost:3000/users/signup",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "3000",
-          "path": [
-            "users",
-            "signup"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Sign In",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              ""
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
+          },
+          "response": []
         },
         {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              ""
+          "name": "Sign In",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"email\": \"diaa@gmail.com\",\n  \"password\": \"DiaaDiaa\"\n}"
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"diaa2002@gmail.com\",\n  \"password\": \"12345678\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/users/signin",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "users",
+                "signin"
+              ]
+            }
+          },
+          "response": []
         },
-        "url": {
-          "raw": "http://localhost:3000/users/signin",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "3000",
-          "path": [
-            "users",
-            "signin"
-          ]
+        {
+          "name": "refresh Token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "refreshtoken",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWFjYTM0ZDMzODQzZmNiMmMyODE5NGIiLCJpYXQiOjE3NzI5MjIxNTIsImV4cCI6MTgwNDQ3OTc1Mn0.relFZ16LajBcpnVFibf27H3U_XEIHfIMPK4Nh2hp1r0",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/users/refreshToken",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "users",
+                "refreshToken"
+              ]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
+      ]
     },
     {
-      "name": "Get Profile",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "token",
-            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTk4ZjU5MjkyZGVmYTdmODJkYTVlNWQiLCJpYXQiOjE3NzE2MzIxNzEsImV4cCI6MTc3MTYzNTc3MX0.vQNBgMKiLTayxshR_3PsudyZMC94qAPhbWl61GH3yNc"
-          }
-        ],
-        "url": {
-          "raw": "http://localhost:3000/users/profile",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "3000",
-          "path": [
-            "users",
-            "profile"
-          ]
+      "name": "profile",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "token",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTk4ZjU5MjkyZGVmYTdmODJkYTVlNWQiLCJpYXQiOjE3NzE2MzIxNzEsImV4cCI6MTc3MTYzNTc3MX0.vQNBgMKiLTayxshR_3PsudyZMC94qAPhbWl61GH3yNc"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/users/profile",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "users",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Profile ById",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "token",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWEyMDhlY2ZlMmRlNTRjZjI1OGE4YzciLCJpYXQiOjE3NzIyMjY5MDMsImV4cCI6MTc3MjIzMDUwM30.C-y_tP4Tkapor9lS3iWH6DjY3TFusPnjbbk2regatmw",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/users/69a208ecfe2de54cf258a8c7",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "users",
+                "69a208ecfe2de54cf258a8c7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update Password",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "token",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWFjYTM0ZDMzODQzZmNiMmMyODE5NGIiLCJpYXQiOjE3NzI5MjE3NDIsImV4cCI6MTc3MjkyNTM0Mn0.-KQEzp1DEP0Im_sDOtAxhd4gXmK-eOWAZVeH2fOinQg",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"oldPassword\":\"DiaaDiaa\",\r\n    \"newPassword\":\"12345678\",\r\n    \"confirmPassword\":\"12345678\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/users/updatePassword",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "users",
+                "updatePassword"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update Profile Picture",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "token",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWFjYTM0ZDMzODQzZmNiMmMyODE5NGIiLCJpYXQiOjE3NzI5MjIxNTIsImV4cCI6MTc3MjkyNTc1Mn0.yj5EmAAyZpDnkiuOpMk1jWLVpiGFCkq_tsl-zWMYAag",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "1ba6125b-c208-4c39-9911-498ba8e2578e",
+                  "src": "/F:/Eng Diaa Eldeen/Code And Career/My Ai 2.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:3000/users/updateProfilePicture",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "users",
+                "updateProfilePicture"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "token",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWFjYTM0ZDMzODQzZmNiMmMyODE5NGIiLCJpYXQiOjE3NzI5MjIxNTIsImV4cCI6MTc3MjkyNTc1Mn0.yj5EmAAyZpDnkiuOpMk1jWLVpiGFCkq_tsl-zWMYAag",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstName\": \"Diaa\",\r\n    \"lastName\": \"Elseady\",\r\n    \"phone\": \"01004108183\",\r\n    \"gender\": \"male\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/users/updateProfile",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "users",
+                "updateProfile"
+              ]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
-    },
-    {
-      "name": "Get Profile ById",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "token",
-            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWEyMDhlY2ZlMmRlNTRjZjI1OGE4YzciLCJpYXQiOjE3NzIyMjY5MDMsImV4cCI6MTc3MjIzMDUwM30.C-y_tP4Tkapor9lS3iWH6DjY3TFusPnjbbk2regatmw",
-            "disabled": true
-          }
-        ],
-        "url": {
-          "raw": "http://localhost:3000/users/69a208ecfe2de54cf258a8c7",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "3000",
-          "path": [
-            "users",
-            "69a208ecfe2de54cf258a8c7"
-          ]
-        }
-      },
-      "response": []
+      ]
     }
   ],
   "event": [

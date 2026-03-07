@@ -44,7 +44,7 @@ export const signUpSchema = joi
       "any.required": "Confirm password is required",
     }),
 
-    age: joi.number().integer().min(18).strict(true).required().messages({
+    age: joi.number().integer().min(18).required().messages({
       "number.base": "Age must be a number",
       "number.min": "You must be at least 18 years old",
       "any.required": "Age is required",
@@ -90,3 +90,83 @@ export const signInSchema = joi
     }),
   })
   .required();
+
+
+
+export const updateProfileSchema = joi
+  .object({
+    firstName: joi
+      .string()
+      .min(3)
+      .max(30)
+      .trim()
+      .pattern(/^[a-zA-Z0-9\s\-_]+$/)
+      .messages({
+        "string.base": "firstName must be a string",
+        "string.empty": "firstName is required",
+        "string.min": "firstName must be at least 3 characters",
+        "string.max": "firstName must be at most 30 characters",
+        "string.pattern.base":
+          "firstName can only contain letters, numbers, spaces, - and _",
+        "any.required": "firstName is required",
+      }),
+    lastName: joi
+      .string()
+      .min(3)
+      .max(30)
+      .trim()
+      .pattern(/^[a-zA-Z0-9\s\-_]+$/)
+      .messages({
+        "string.base": "lastName must be a string",
+        "string.empty": "lastName is required",
+        "string.min": "lastName must be at least 3 characters",
+        "string.max": "lastName must be at most 30 characters",
+        "string.pattern.base":
+          "lastName can only contain letters, numbers, spaces, - and _",
+        "any.required": "lastName is required",
+      }),
+
+    age: joi.number().integer().min(18).strict(true).messages({
+      "number.base": "Age must be a number",
+      "number.min": "You must be at least 18 years old",
+      "any.required": "Age is required",
+    }),
+
+    phone: joi
+      .string()
+      .pattern(/^01[0125][0-9]{8}$/)
+      .allow("")
+      .optional()
+      .messages({
+        "string.pattern.base":
+          "Please enter a valid Egyptian mobile number starting with 010, 011, 012 or 015 followed by 8 digits",
+      }),
+
+    gender: joi.string().valid(...Object.values(GenderEnum)).messages({
+      "any.only": "Gender must be either male or female",
+    }),
+  })
+  .required();
+
+
+
+export const updatePasswordSchema = joi
+  .object({
+      oldPassword: joi.string().required().messages({
+      "any.required": "Old Password is required",
+    }),
+      newPassword: joi.string().min(8).required().messages({
+      "string.min": "Password must be at least 8 characters",
+      "string.empty": "newPassword is required",
+      "any.required": "newPassword is required",
+    }),
+      confirmPassword: joi.string().valid(joi.ref("newPassword")).required().messages({
+      "any.only": "Passwords do not match",
+      "any.required": "Confirm password is required",
+    }),
+  })
+  .required();
+
+
+
+
