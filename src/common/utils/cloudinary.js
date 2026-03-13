@@ -1,9 +1,8 @@
 import { v2 as cloudinary } from "cloudinary";
-
 cloudinary.config({
-  cloud_name: "demukyop6",
-  api_key: "896592979747776",
-  api_secret: "WB3oKm0GJD9ay4Xj7DPzfSMlK54",
+  cloud_name: process.env.Cloud_Name,
+  api_key: process.env.Api_Key,
+  api_secret: process.env.Api_Secret,
 });
 
 export default cloudinary;

@@ -1,7 +1,7 @@
 import multer from "multer";
 
 export const cloudMulter = ({ fileExt = [] } = {}) => {
-  const storage = multer.memoryStorage();
+  const storage = multer.diskStorage({});
 
   function fileFilter(req, file, cb) {
     if (!fileExt.includes(file.mimetype)) {
@@ -10,5 +10,6 @@ export const cloudMulter = ({ fileExt = [] } = {}) => {
     cb(null, true);
   }
 
-  return multer({ storage, fileFilter });
+  const upload = multer({ storage, fileFilter });
+  return upload;
 };

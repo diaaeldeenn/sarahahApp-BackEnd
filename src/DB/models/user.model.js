@@ -69,6 +69,10 @@ const userSchema = new mongoose.Schema(
       enum: Object.values(RoleEnum),
       default: RoleEnum.user,
     },
+    logOutTime: {
+      type: Date,
+      required: true,
+    },
   },
   {
     timestamps: true,

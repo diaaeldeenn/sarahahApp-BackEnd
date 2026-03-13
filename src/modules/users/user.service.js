@@ -35,7 +35,7 @@ export const signUp = async (req, res, next) => {
 
     if (req.file) {
       const { secure_url, public_id } = await cloudinary.uploader.upload(
-        `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`,
+        req.file.path,
         { folder: "SarahahApp/usersProfile" },
       );
 
@@ -134,12 +134,10 @@ export const getProfile = async (req, res, next) => {
       data: { ...req.user._doc, phone: decrypt(req.user.phone) },
     });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
-
-
-
 
 export const getUserProfileById = async (req, res, next) => {
   try {
@@ -164,12 +162,6 @@ export const getUserProfileById = async (req, res, next) => {
     next(error);
   }
 };
-
-
-
-
-
-
 
 export const refreshToken = async (req, res, next) => {
   try {
@@ -207,21 +199,18 @@ export const refreshToken = async (req, res, next) => {
   }
 };
 
-
-
-
-
-
-
-
 export const updateProfile = async (req, res, next) => {
   try {
-    let {firstName,lastName,gender,phone} = req.body;
-    if(phone){
-      phone = encrypt(phone)
+    let { firstName, lastName, gender, phone } = req.body;
+    if (phone) {
+      phone = encrypt(phone);
     }
-    const user = await db_service.findOneAndUpdate({model:userModel,filter:{_id:req.user._id},update:{firstName,lastName,gender,phone}});
-    if(!user){
+    const user = await db_service.findOneAndUpdate({
+      model: userModel,
+      filter: { _id: req.user._id },
+      update: { firstName, lastName, gender, phone },
+    });
+    if (!user) {
       throw new Error("User Not Exist");
     }
     successResponse({
@@ -233,30 +222,22 @@ export const updateProfile = async (req, res, next) => {
   }
 };
 
-
 export const updatePassword = async (req, res, next) => {
   try {
-    let {oldPassword,newPassword,} = req.body;
-    if (!CompareHash({ plainText: oldPassword, cipherText: req.user.password })) {
+    let { oldPassword, newPassword } = req.body;
+    if (
+      !CompareHash({ plainText: oldPassword, cipherText: req.user.password })
+    ) {
       throw new Error("Invalid old Password", { cause: 400 });
     }
-    const hashNewPassword = Hash({plainText:newPassword});
+    const hashNewPassword = Hash({ plainText: newPassword });
     req.user.password = hashNewPassword;
     await req.user.save();
-    successResponse({res});
+    successResponse({ res });
   } catch (error) {
     next(error);
   }
 };
-
-
-
-
-
-
-
-
-
 
 export const updateProfilePicture = async (req, res, next) => {
   try {
@@ -265,10 +246,8 @@ export const updateProfilePicture = async (req, res, next) => {
     }
 
     const { secure_url, public_id } = await cloudinary.uploader.upload(
-      `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`,
-      {
-        folder: "SarahahApp/usersProfile",
-      }
+      req.file.path,
+      { folder: "SarahahApp/usersProfile" },
     );
 
     if (req.user.profilePicture?.public_id) {
@@ -289,4 +268,10 @@ export const updateProfilePicture = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export const logOut = async (req, res, next) => {
+  req.user.logOutTime = new Date();
+  await req.user.save();
+  successResponse({ res });
 };

@@ -10,32 +10,43 @@ export const authentication = async (req, res, next) => {
     }
     const decoded = jwt.verify(token, "DiaaDiaa");
     const userId = decoded.userId;
-    if(!decoded || !userId){
+    if (!decoded || !userId) {
       throw new Error("Invalid Token");
     }
-    const user = await db_service.findOne({model:userModel,filter:{_id:userId}});
-    if(!user){
+    const user = await db_service.findOne({
+      model: userModel,
+      filter: { _id: userId },
+    });
+    if (!user) {
       throw new Error("User Not Found");
     }
+    console.log(user);
+    
+    if (user?.logOutTime?.getTime() > decoded.iat * 1000) {
+      throw new Error("invalid Token");
+    }
     req.user = user;
+    req.decoded = decoded;
+    
     next();
   } catch (error) {
-    if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
+    if (
+      error.name === "JsonWebTokenError" ||
+      error.name === "TokenExpiredError"
+    ) {
       return res.status(401).json({ message: "Invalid or expired token" });
+    }
   }
-}};
-
+};
 
 export const authorization = (roles = []) => {
   return async (req, res, next) => {
-    if(!roles.includes(req.user.role)){
+    if (!roles.includes(req.user.role)) {
       throw new Error("UnAuthorized");
     }
     next();
   };
 };
-
-
 
 export const authenticationVisitor = async (req, res, next) => {
   try {
@@ -53,7 +64,7 @@ export const authenticationVisitor = async (req, res, next) => {
 
     const user = await db_service.findOne({
       model: userModel,
-      filter: { _id: decoded.userId }
+      filter: { _id: decoded.userId },
     });
 
     if (user) {
@@ -61,7 +72,6 @@ export const authenticationVisitor = async (req, res, next) => {
     }
 
     next();
-
   } catch (error) {
     next();
   }

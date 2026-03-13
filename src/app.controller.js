@@ -1,17 +1,20 @@
+import "dotenv/config";
 import express from "express";
 import connectionDB from "./DB/connectionDB.js";
 import userRouter from "./modules/users/user.controller.js";
 import cors from "cors";
+import { redisConnection } from "./DB/redis/redis.db.js";
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const bootstrap = () => {
   app.use(cors(), express.json());
-  app.use("/src/DB/uploads",express.static("src/DB/uploads"));
+  app.use("/src/DB/uploads", express.static("src/DB/uploads"));
   app.get("/", (req, res) => {
     res.status(200).json({ message: "Welcome In My Api" });
   });
   connectionDB();
+  redisConnection();
   app.use("/users", userRouter);
   app.use("{/*demo}", (req, res) => {
     throw new Error(`Url ${req.originalUrl} Not Found!`, { cause: 404 });
