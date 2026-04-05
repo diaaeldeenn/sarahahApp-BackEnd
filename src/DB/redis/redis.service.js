@@ -43,7 +43,7 @@ export const exists = async (key) => {
   }
 };
 
-export const ttl = async (key) => {
+export const ttl_redis = async (key) => {
   try {
     return await redisClient.ttl(key);
   } catch (error) {
@@ -64,5 +64,13 @@ export const keys = async (pattern) => {
     return await redisClient.keys(`${pattern}*`);
   } catch (error) {
     console.log("error to get keys from redis", error);
+  }
+};
+
+export const incr = async (key) => {
+  try {
+    return await redisClient.incr(key);
+  } catch (error) {
+    console.log("error to incr operation", error);
   }
 };

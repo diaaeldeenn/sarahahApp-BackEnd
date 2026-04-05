@@ -13,6 +13,19 @@ import userModel from "../../DB/models/user.model.js";
 import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
 import cloudinary from "../../common/utils/cloudinary.js";
+import {
+  deleteKey,
+  get,
+  incr,
+  keys,
+  set,
+  ttl_redis,
+} from "../../DB/redis/redis.service.js";
+import { randomUUID } from "crypto";
+import { generateOtp, sendEmail } from "../../common/utils/email/send.email.js";
+import { sendEmailOtp } from "../../common/utils/email/email.otp.js";
+import { eventEmitter } from "../../common/utils/email/email.event.js";
+import { email_Template } from "../../common/utils/email/email.template.js";
 
 export const signUp = async (req, res, next) => {
   const {
@@ -56,13 +69,63 @@ export const signUp = async (req, res, next) => {
       },
     });
 
+    const otp = await generateOtp();
+    eventEmitter.emit("confirmEmail", async () => {
+      await sendEmail({
+        to: email,
+        subject: "Welcome To SarahahApp",
+        html: email_Template(otp),
+      });
+      await set({
+        key: `otp::${email}`,
+        value: Hash({ plainText: `${otp}` }),
+        ttl: 60 * 2,
+      });
+      await set({
+        key: `max_otp::${email}`,
+        value: 1,
+        ttl: 60 * 5,
+      });
+    });
     successResponse({ res, status: 201, data: user });
   } catch (error) {
-    res.status(500).json({
-      message: "Server Error!",
-      error: error.message,
-    });
+    next(error);
   }
+};
+
+export const confirmEmail = async (req, res, nex) => {
+  const { email, otp } = req.body;
+  const otpExist = await get(`otp::${email}`);
+  if (!otpExist) {
+    throw new Error("Otp Expired");
+  }
+  if (!CompareHash({ plainText: otp, cipherText: otpExist })) {
+    throw new Error("Invalid Otp");
+  }
+  const user = await db_service.findOneAndUpdate({
+    model: userModel,
+    filter: { email, confirmed: { $exists: false } },
+    update: { confirmed: true },
+  });
+  if (!user) {
+    throw new Error("User Not Exist");
+  }
+  await deleteKey(`otp::${email}`);
+  successResponse({ res, message: "Email confirmed Succefully!" });
+};
+
+export const resendOtp = async (req, res, nex) => {
+  const { email } = req.body;
+
+  const user = await db_service.findOne({
+    model: userModel,
+    filter: { email, confirmed: { $exists: false } },
+  });
+  if (!user) {
+    throw new Error("User Not Exist Or Already Confirmed");
+  }
+  await sendEmailOtp(email);
+  successResponse({ res, message: "Otp Resend Succefully!" });
 };
 
 export const signUpWithGmail = async (req, res, next) => {
@@ -103,6 +166,7 @@ export const signIn = async (req, res, next) => {
       filter: {
         email,
         provider: ProviderEnum.system,
+        confirmed: { $exists: true },
       },
     });
     if (!user) {
@@ -111,11 +175,14 @@ export const signIn = async (req, res, next) => {
     if (!CompareHash({ plainText: password, cipherText: user.password })) {
       throw new Error("Invalid Password", { cause: 400 });
     }
+    const uuid = randomUUID();
     const token = jwt.sign({ userId: user._id }, "DiaaDiaa", {
       expiresIn: "1h",
+      jwtid: uuid,
     });
     const refreshToken = jwt.sign({ userId: user._id }, "DiaaDiaaRefresh", {
       expiresIn: "1y",
+      jwtid: uuid,
     });
     successResponse({
       res,
@@ -126,6 +193,77 @@ export const signIn = async (req, res, next) => {
     next(error);
   }
 };
+
+export const forgetPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const user = await db_service.findOne({
+      model: userModel,
+      filter: {
+        email,
+        provider: ProviderEnum.system,
+        confirmed: { $exists: true },
+      },
+    });
+    if (!user) {
+      throw new Error("User Not Exist", { cause: 409 });
+    }
+    await sendEmailOtp(email);
+    successResponse({ res, message: "Otp Send Succefully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const confirmPassword = async (req, res, next) => {
+  try {
+    const { email, otp } = req.body;
+    const otpValue = await get(`otp::${email}`);
+    if (!otpValue) {
+      throw new Error("Invalid or Expired OTP");
+    }
+    if (!CompareHash({ plainText: otp, cipherText: otpValue })) {
+      throw new Error("Otp Is Invalid");
+    }
+    await deleteKey(`otp::${email}`);
+    await deleteKey(`max_otp::${email}`);
+    await set({ key: `verified_otp::${email}`, value: 1, ttl: 60 * 5 });
+    successResponse({ res, message: "Otp Is Valid" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resetPassword = async (req, res, next) => {
+  try {
+    const { email, newPassword } = req.body;
+    const isVerified = await get(`verified_otp::${email}`);
+    if (!isVerified) {
+      throw new Error("Otp not verified");
+    }
+    const user = await db_service.findOneAndUpdate({
+      model: userModel,
+      filter: {
+        email,
+        provider: ProviderEnum.system,
+        confirmed: { $exists: true },
+      },
+      update: {
+        password: Hash({ plainText: newPassword }),
+        logOut: new Date(),
+      },
+    });
+    if (!user) {
+      throw new Error("User Not Exist", { cause: 409 });
+    }
+    await deleteKey(`verified_otp::${email}`);
+    await deleteKey(`confirm_tries::${email}`);
+    successResponse({ res, message: "Password Reset Succefully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 export const getProfile = async (req, res, next) => {
   try {
@@ -232,6 +370,7 @@ export const updatePassword = async (req, res, next) => {
     }
     const hashNewPassword = Hash({ plainText: newPassword });
     req.user.password = hashNewPassword;
+    req.user.logOutTime = new Date();
     await req.user.save();
     successResponse({ res });
   } catch (error) {
@@ -271,7 +410,17 @@ export const updateProfilePicture = async (req, res, next) => {
 };
 
 export const logOut = async (req, res, next) => {
-  req.user.logOutTime = new Date();
-  await req.user.save();
+  const { all } = req.query;
+  if (all == "true") {
+    req.user.logOutTime = new Date();
+    await req.user.save();
+    await deleteKey(await keys(`revoke_token::${req.user._id}`));
+  } else {
+    await set({
+      key: `revoke_token::${req.user._id}::${req.decoded.jti}`,
+      value: `${req.decoded._id}`,
+      ttl: req.decoded.exp - Math.floor(Date.now() / 1000),
+    });
+  }
   successResponse({ res });
 };

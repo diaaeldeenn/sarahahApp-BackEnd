@@ -69,10 +69,7 @@ const userSchema = new mongoose.Schema(
       enum: Object.values(RoleEnum),
       default: RoleEnum.user,
     },
-    logOutTime: {
-      type: Date,
-      required: true,
-    },
+    logOutTime: Date,
   },
   {
     timestamps: true,
@@ -92,6 +89,6 @@ userSchema
     this.lastName = lastName;
   });
 
-const userModel = mongoose.model.user || mongoose.model("user", userSchema);
+const userModel = mongoose.models.user || mongoose.model("user", userSchema);
 
 export default userModel;

@@ -3,12 +3,21 @@ import express from "express";
 import connectionDB from "./DB/connectionDB.js";
 import userRouter from "./modules/users/user.controller.js";
 import cors from "cors";
+import helmet from "helmet";
+import { rateLimit } from "express-rate-limit";
 import { redisConnection } from "./DB/redis/redis.db.js";
+import messageRouter from "./modules/messages/message.controller.js";
 const app = express();
 const port = process.env.PORT || 3000;
 
 const bootstrap = () => {
-  app.use(cors(), express.json());
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    limit: 50, // Limit each IP to 50 requests per `window`
+    message:"To Many Request Try After 15 Minutes",
+    legacyHeaders:false
+  });
+  app.use(cors(), helmet(),limiter,express.json());
   app.use("/src/DB/uploads", express.static("src/DB/uploads"));
   app.get("/", (req, res) => {
     res.status(200).json({ message: "Welcome In My Api" });
@@ -16,6 +25,7 @@ const bootstrap = () => {
   connectionDB();
   redisConnection();
   app.use("/users", userRouter);
+  app.use("/messages", messageRouter);
   app.use("{/*demo}", (req, res) => {
     throw new Error(`Url ${req.originalUrl} Not Found!`, { cause: 404 });
   });

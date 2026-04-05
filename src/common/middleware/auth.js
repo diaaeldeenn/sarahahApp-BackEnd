@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import * as db_service from "../../DB/db.service.js";
 import userModel from "../../DB/models/user.model.js";
+import { get } from "../../DB/redis/redis.service.js";
 
 export const authentication = async (req, res, next) => {
   try {
@@ -20,14 +21,17 @@ export const authentication = async (req, res, next) => {
     if (!user) {
       throw new Error("User Not Found");
     }
-    console.log(user);
-    
+
     if (user?.logOutTime?.getTime() > decoded.iat * 1000) {
       throw new Error("invalid Token");
     }
+    const revokeToken = await get(`revoke_token::${user._id}::${decoded.jti}`);
+    if (revokeToken) {
+      throw new Error("Invalid Token Revoked");
+    }
     req.user = user;
     req.decoded = decoded;
-    
+
     next();
   } catch (error) {
     if (
@@ -36,6 +40,7 @@ export const authentication = async (req, res, next) => {
     ) {
       return res.status(401).json({ message: "Invalid or expired token" });
     }
+    next(error);
   }
 };
 
@@ -73,6 +78,6 @@ export const authenticationVisitor = async (req, res, next) => {
 
     next();
   } catch (error) {
-    next();
+    next(error);
   }
 };
