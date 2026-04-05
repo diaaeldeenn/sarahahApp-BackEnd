@@ -1,12 +1,17 @@
 import mongoose from "mongoose";
+
+let isConnected = false;
+
 const connectionDB = async () => {
-  try {                                       //^DB Name
-    await mongoose.connect("mongodb://127.0.0.1:27017/SarahahApp", {
-      serverSelectionTimeoutMS: 3000,
-    });
-    console.log("Connected Succefully");
+  if (isConnected) return;
+
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    isConnected = true;
+    console.log("Connected Successfully");
   } catch (error) {
-    console.log("Connected Failed");
+    console.log("Connection Failed");
+    console.log(error.message);
   }
 };
 

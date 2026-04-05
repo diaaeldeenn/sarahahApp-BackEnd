@@ -170,7 +170,7 @@ export const signIn = async (req, res, next) => {
       },
     });
     if (!user) {
-      throw new Error("User Not Exist", { cause: 409 });
+      throw new Error("User Not Exist Or Not Confirmed Yet !", { cause: 409 });
     }
     if (!CompareHash({ plainText: password, cipherText: user.password })) {
       throw new Error("Invalid Password", { cause: 400 });

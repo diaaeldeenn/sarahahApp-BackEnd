@@ -8,34 +8,30 @@ import { rateLimit } from "express-rate-limit";
 import { redisConnection } from "./DB/redis/redis.db.js";
 import messageRouter from "./modules/messages/message.controller.js";
 const app = express();
-const port = process.env.PORT || 3000;
+app.use(async (req, res, next) => {
+  await connectionDB();
+  next();
+});
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 50, // Limit each IP to 50 requests per `window`
+  message: "To Many Request Try After 15 Minutes",
+  legacyHeaders: false,
+});
+app.use(cors(), helmet(), limiter, express.json());
+app.use("/src/DB/uploads", express.static("src/DB/uploads"));
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Welcome In My Api" });
+});
+connectionDB();
+redisConnection();
+app.use("/users", userRouter);
+app.use("/messages", messageRouter);
+app.use("{/*demo}", (req, res) => {
+  throw new Error(`Url ${req.originalUrl} Not Found!`, { cause: 404 });
+});
+app.use((err, req, res, next) => {
+  res.status(err.cause || 500).json({ message: err.message, stack: err.stack });
+});
 
-const bootstrap = () => {
-  const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    limit: 50, // Limit each IP to 50 requests per `window`
-    message:"To Many Request Try After 15 Minutes",
-    legacyHeaders:false
-  });
-  app.use(cors(), helmet(),limiter,express.json());
-  app.use("/src/DB/uploads", express.static("src/DB/uploads"));
-  app.get("/", (req, res) => {
-    res.status(200).json({ message: "Welcome In My Api" });
-  });
-  connectionDB();
-  redisConnection();
-  app.use("/users", userRouter);
-  app.use("/messages", messageRouter);
-  app.use("{/*demo}", (req, res) => {
-    throw new Error(`Url ${req.originalUrl} Not Found!`, { cause: 404 });
-  });
-  app.use((err, req, res, next) => {
-    res
-      .status(err.cause || 500)
-      .json({ message: err.message, stack: err.stack });
-  });
-
-  app.listen(port, () => console.log(`Sever Work On Port ${port}!`));
-};
-
-export default bootstrap;
+export default app;
